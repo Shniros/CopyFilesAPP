@@ -23,18 +23,14 @@ public class CopyFilesFrame extends JFrame {
         configureFrame();
         buttonCopy.addActionListener(e -> {
             copyThread = new CopyThread();
-            copyThread.run(textSource.getText(), textDest.getText());
+            copyThread.start(textSource.getText(), textDest.getText());
             buttonCopy.setEnabled(false);
             System.out.println("Hello");
             buttonStop.setEnabled(true);
             buttonPause.setEnabled(true);
         });
         buttonPause.addActionListener(e -> {
-            try {
-                copyThread.sleep(100000);
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            }
+            copyThread.trySleep();
         });
         buttonStop.addActionListener(e -> {
             copyThread.interrupt();
