@@ -1,3 +1,5 @@
+package gui;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
@@ -9,14 +11,8 @@ import java.awt.Dimension;
 public class ProgressBar {
     public ProgressBar(){
         JProgressBar progress = new JProgressBar();
-        JButton button = new JButton("start");
-        button.addActionListener(e -> {
-            startWorker(progress, button).execute();
-            button.setEnabled(false);
-            button.setText("please wait");
-        });
-
-        JFrame frame = new JFrame("SwingWorkerAndProgressBarExample");
+        JButton button = new JButton("Cancel");
+        JFrame frame = new JFrame("Copying file..");
         frame.setLayout(new BorderLayout());
         frame.add(progress, BorderLayout.NORTH);
         frame.add(button, BorderLayout.SOUTH);
@@ -24,6 +20,11 @@ public class ProgressBar {
         frame.setSize(new Dimension(400, 100));
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        startWorker(progress, button).execute();
+        button.addActionListener(e -> {
+        frame.dispose();
+        });
+
     }
     private static SwingWorker<Void, Void> startWorker(JProgressBar progress, JButton button) {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -38,9 +39,8 @@ public class ProgressBar {
 
             @Override
             protected void done() {
-                button.setEnabled(true);
-                button.setText("start again");
-                progress.setValue(0);
+                button.setText("Close");
+                //progress.setValue(0);
             }
         };
         worker.addPropertyChangeListener(e -> {

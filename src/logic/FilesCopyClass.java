@@ -1,11 +1,13 @@
+package logic;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class CopyFiles {
+public class FilesCopyClass {
     private String fileSource;
     private String fileDest;
-    private LoadThread  loadThread;
-    public CopyFiles(String fileSource,String fileDest){
+
+    public FilesCopyClass(String fileSource,String fileDest){
         this.fileSource = fileSource;
         this.fileDest = fileDest;
     }
@@ -17,15 +19,14 @@ public class CopyFiles {
         this.fileDest = fileDest;
     }
 
-    public void copy() throws Exception {
+    public void copy(){
 
-        FileInputStream in = new FileInputStream(fileSource);
         try {
+            FileInputStream in = new FileInputStream(fileSource);
             FileOutputStream out = new FileOutputStream(fileDest);
             try {
                 byte[] buf = new byte[1024];
                 int r;
-                loadThread.sleep(1000);
                 do {
                     r = in.read(buf, 0, buf.length);
                     if (r > 0) {
@@ -34,9 +35,11 @@ public class CopyFiles {
                 } while (r > 0);
             } finally {
                 out.close();
+                in.close();
             }
-        } finally {
-            in.close();
+        } catch (Exception ex){
+
+            ex.printStackTrace();
         }
     }
 }
